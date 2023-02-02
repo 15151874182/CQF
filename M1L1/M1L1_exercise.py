@@ -44,7 +44,46 @@ print('2 ##########')
 print('A_u:',A_u)
 print('B_u:',B_u)
 print('A_std:',A_std)
-print('B_std:',B_std)
+print('B_std:',B_std)  
 ##结论：上下部分的u差很多，std较相似
 ##但是理论上服从同一分布的数据打乱分成2部分后，还是服从同一分布，猜测可能数据量不够大，或者存在离群值
+
+##3 手动QQplot
+df3=df[['D1_rtn','D5_rtn']]
+df3['scaled_D1']=(df3['D1_rtn']-df3['D1_rtn'].mean())/df3['D1_rtn'].std()
+df3['scaled_D5']=(df3['D5_rtn']-df3['D5_rtn'].mean())/df3['D5_rtn'].std()
+
+df3['scaled_D1']=df3['scaled_D1'].sort_values().values ##不影响其它列情况下单独排序
+df3['scaled_D5']=df3['scaled_D5'].sort_values().values
+df3.index=[i for i in range(1,len(df3)+1)]
+df3['density']=df3.index/len(df3)
+
+from scipy.stats import norm
+# q = norm.cdf(1.96)  #累计密度函数
+# norm.ppf(q)  #累计密度函数的反函数
+df3['Standard']=norm.ppf(df3['density'])
+plt.plot(df3['Standard'],df3['scaled_D1'],label='scaled_D1')
+plt.plot(df3['Standard'],df3['scaled_D5'],label='scaled_D5')
+plt.title("scaled-D1-D5-QQplot", fontsize=22)
+plt.xlabel('theoretical')
+plt.ylabel('empirical')
+plt.legend(fontsize=12)   
+###直接调包QQplot
+import statsmodels.api as sm
+fig1 = sm.qqplot(df3['scaled_D1'], line='45')
+fig2 = sm.qqplot(df3['scaled_D5'], line='45')
+plt.show()
+
+##histogram
+df3=df3.iloc[:-1,:] ##最后一行的Standard是inf，要去掉
+df3['scaled_D1'].plot(kind="hist",bins=20,color="blue",edgecolor='black',density=True,label="histogram")
+#加核密度图
+df3['scaled_D1'].plot(kind="kde",color="red",label="scaled_D1")
+df3['Standard'].plot(kind="kde",color="green",label="Normal")
+
+plt.xlabel("scaled_D1")
+plt.ylabel("density")
+plt.title("scaled_D1_distribution")
+plt.legend()
+plt.show()
 
