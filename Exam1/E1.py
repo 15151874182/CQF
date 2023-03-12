@@ -61,7 +61,7 @@ class Portfolio():
         plt.figure(figsize=(8, 6))
         plt.colorbar(plt.scatter(std_port_list, u_port_list, c=np.array(u_port_list) / np.array(std_port_list), 
                                 marker='o', cmap='RdYlGn', edgecolors='black'), label='Sharpe Ratio') 
-        plt.plot(wg_std_port, wg_u_port, 'y*', markersize=18)
+        plt.plot(wg_std_port, wg_u_port, 'r*', markersize=18)
         plt.plot(wt_std_port, wt_u_port, 'g*', markersize=18)
         plt.plot(std_list1, u_list1, 'r-')
         plt.plot(std_list2, u_list2, 'b--')
@@ -87,28 +87,10 @@ if __name__=='__main__':
                 [0.3, 0.6 ,1.0 ,0.6],
                 [0.3, 0.6, 0.6, 1.0]])
 
-    # u=np.array([0.05,0.07,0.15,0.27])
-    # std=np.array([0.07,0.12,0.30,0.60])
-    # R=np.array([[1.0, 0.8 ,0.5 ,0.4],
-    #             [0.8 ,1.0, 0.7, 0.5],
-    #             [0.5, 0.7 ,1.0 ,0.8],
-    #             [0.4, 0.5, 0.8, 1.0]])
-    
     portfolio=Portfolio(u=u,std=std,R=R)
-    # print(portfolio.sigma)
-    # print(portfolio.A,portfolio.B,portfolio.C)
-    # w_star, std_port, u_port=portfolio.get_EF_points(m=0.1)
-    # print( w_star, std_port, u_port)
-    
     w_g, wg_std_port, wg_u_port=portfolio.get_min_var_portfolio()
-    # print(w_g, wg_std_port, wg_u_port)
-    
     # w_star, std_port, u_port=portfolio.get_EF_points(m=0.1,r=0.025)
-    # print(w_star, std_port, u_port)    
-
     w_t, wt_std_port, wt_u_port=portfolio.get_tangency_portfolio(r=r)
-    # print(w_t, wt_std_port, wt_u_port)  
-    
     std_port_list, u_port_list=portfolio.generate_samples(N=700)
     portfolio.plot(r=r, std_port_list=std_port_list,u_port_list=u_port_list,
                    wg_std_port=wg_std_port,wg_u_port=wg_u_port,
