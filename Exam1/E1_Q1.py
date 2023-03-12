@@ -1,11 +1,17 @@
 import numpy as np
 np.random.seed(0)
-# mus=np.array([0.05,0.07,0.15,0.27])
-# stds=np.array([0.07,0.12,0.30,0.60])
-# R=np.array([[1,0.8,0.5,0.4],
-#             [0.8,1.0,0.7,0.5],
-#             [0.5,0.7,1.0,0.8],
-#             [0.4,0.5,0.8,1.0]])
+mus=np.array([0.05,0.07,0.15,0.27])
+stds=np.array([0.07,0.12,0.30,0.60])
+R=np.array([[1,0.8,0.5,0.4],
+            [0.8,1.0,0.7,0.5],
+            [0.5,0.7,1.0,0.8],
+            [0.4,0.5,0.8,1.0]])
+
+# R=np.array([[1, 0, 0, 0],
+#             [0, 1.0, 0, 0],
+#             [0, 0, 1.0, 0],
+#             [0, 0, 0, 1.0]])
+
 
 mus=np.array([0.02,0.07,0.15,0.2])
 stds=np.array([0.05,0.12,0.17,0.25])
@@ -67,6 +73,7 @@ ax = plt.axes()
 ax.set_title('Cloud of Simulated Allocation')
 ax.set_xlabel('Risk')
 ax.set_ylabel('Return')
+
 fig.colorbar(ax.scatter(stds_port, mus_port, c=np.array(mus_port) / np.array(stds_port), 
                         marker='o', cmap='RdYlGn', edgecolors='black'), label='Sharpe Ratio') 
 
