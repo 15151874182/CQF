@@ -47,6 +47,12 @@ class Portfolio():
         wg_std_port=np.sqrt(w_g.T.dot(self.sigma).dot(w_g))
         wg_u_port=w_g.T.dot(self.u)
         return w_g, wg_std_port, wg_u_port    
+
+    def get_tangency_portfolio(self,r=None): ##r->risk free rate 
+        w_t=self.inv_sigma.dot(self.u-r*self.unit)/(self.B-self.A*r)
+        wt_std_port=np.sqrt(w_t.T.dot(self.sigma).dot(w_t))
+        wt_u_port=w_t.T.dot(self.u)
+        return w_t, wt_std_port, wt_u_port      
     
     def plot(self,r, std_port_list, u_port_list, 
                   wg_std_port, wg_u_port,
@@ -58,7 +64,6 @@ class Portfolio():
         std_list2 = list(np.linspace(0, 0.25, 100))
         u_list2=[std*slope+intercept for std in std_list2]        
         
-        plt.figure(figsize=(8, 6))
         plt.colorbar(plt.scatter(std_port_list, u_port_list, c=np.array(u_port_list) / np.array(std_port_list), 
                                 marker='o', cmap='RdYlGn', edgecolors='black'), label='Sharpe Ratio') 
         plt.plot(wg_std_port, wg_u_port, 'r*', markersize=18)
@@ -72,11 +77,7 @@ class Portfolio():
         plt.ylabel('Return')
         plt.grid('True')
     
-    def get_tangency_portfolio(self,r=None): ##r->risk free rate 
-        w_t=self.inv_sigma.dot(self.u-r*self.unit)/(self.B-self.A*r)
-        wt_std_port=np.sqrt(w_t.T.dot(self.sigma).dot(w_t))
-        wt_u_port=w_t.T.dot(self.u)
-        return w_t, wt_std_port, wt_u_port        
+  
 
 if __name__=='__main__':
     r=0.005
