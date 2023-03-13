@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 np.random.seed(0) ##set random seed
 
 class Portfolio():
@@ -70,8 +71,8 @@ class Portfolio():
         plt.plot(wt_std_port, wt_u_port, 'g*', markersize=18)
         plt.plot(std_list1, u_list1, 'r-')
         plt.plot(std_list2, u_list2, 'b--')
-        plt.xlim(0, 0.25)
-        plt.ylim(0, 0.25)
+        # plt.xlim(0, 0.25)
+        # plt.ylim(0, 0.25)
         plt.title('Cloud of Simulated Allocation')
         plt.xlabel('Risk')
         plt.ylabel('Return')
@@ -96,5 +97,20 @@ if __name__=='__main__':
     portfolio.plot(r=r, std_port_list=std_port_list,u_port_list=u_port_list,
                    wg_std_port=wg_std_port,wg_u_port=wg_u_port,
                    wt_std_port=wt_std_port, wt_u_port=wt_u_port)
+    
+    df=pd.DataFrame()
+    df.index=['r50','r100','r150','r175']
+    w_t_list=[]
+    u_t_list=[]
+    std_t_list=[]
+    for r in [0.005,0.01,0.015,0.0175]:
+        w_t, wt_std_port, wt_u_port = portfolio.get_tangency_portfolio(r=r)
+        w_t_list.append(str(w_t))
+        u_t_list.append(wt_u_port)
+        std_t_list.append(wt_std_port)
+    df['optimal weights']=w_t_list
+    df['return_portfolio']=u_t_list
+    df['risk_portfolio']=std_t_list
+    print(df)
 
 
